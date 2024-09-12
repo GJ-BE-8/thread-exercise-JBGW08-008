@@ -15,18 +15,18 @@ package com.nhnacademy.thread;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CounterHandler implements Runnable  {
+public class CounterHandler implements Runnable {
     private final long countMaxSize;
 
     private long count;
 
     public CounterHandler(long countMaxSize) {
-        if(countMaxSize<=0){
+        if (countMaxSize <= 0) {
             throw new IllegalArgumentException();
         }
 
         this.countMaxSize = countMaxSize;
-        this.count=0l;
+        this.count = 0l;
     }
 
     @Override
@@ -38,9 +38,10 @@ public class CounterHandler implements Runnable  {
                 throw new RuntimeException(e);
             }
             count++;
-            log.debug("thread:{},state:{},count:{}",Thread.currentThread().getName(),Thread.currentThread().getState(),count);
+            log.debug("thread:{},state:{},count:{}", Thread.currentThread().getName(),
+                    Thread.currentThread().getState(), count);
             //TODO#2 Thread.yield()를 사용해서 수행되고 있는 작업을 다른 Thread에게 양보 하세요.
-
-        }while (count<countMaxSize);
+            Thread.yield();
+        } while (count < countMaxSize);
     }
 }
