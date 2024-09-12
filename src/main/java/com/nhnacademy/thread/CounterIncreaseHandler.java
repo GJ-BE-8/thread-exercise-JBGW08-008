@@ -13,9 +13,13 @@
 package com.nhnacademy.thread;
 
 import com.nhnacademy.count.SharedCounter;
-import lombok.extern.slf4j.Slf4j;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CounterIncreaseHandler implements Runnable {
@@ -25,7 +29,7 @@ public class CounterIncreaseHandler implements Runnable {
 
     public CounterIncreaseHandler(SharedCounter sharedCounter) {
         //sharedCounter를 초기화 합니다.  sharedCounter가 null 이면 IllegalArgumentException이 발생 합니다.
-        if(Objects.isNull(sharedCounter)){
+        if (Objects.isNull(sharedCounter)) {
             throw new IllegalArgumentException(String.format("SharedCount is null"));
         }
         this.sharedCounter = sharedCounter;
@@ -35,7 +39,7 @@ public class CounterIncreaseHandler implements Runnable {
     @Override
     public void run() {
         //TODO#8 현제 Thread의 interrupted이 ture <--  while의 종료조건 : interrupt가 발생 했다면 종료 합니다.
-        while(!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted()) {
             try {
                 Thread.sleep(1000);
                 //TODO#9 sharedCounter의 count를 1증가 시키고 count값을 반환 합니다.
@@ -48,11 +52,11 @@ public class CounterIncreaseHandler implements Runnable {
                 //TODO#10 - A ~ E thread 중 먼저 실행하는 Thread가 무한 점유 합니다. 즉 다른 Thread는 increaseAndGet()를 실행 할 수 없습니다.
                 synchronized (this) {
                     while (true) {
-                        log.debug("{} is working",Thread.currentThread().getName());
+                        log.debug("{} is working", Thread.currentThread().getName());
                     }
                 }
             } catch (Exception e) {
-                log.debug("{} - interrupt!",Thread.currentThread().getName());
+                log.debug("{} - interrupt!", Thread.currentThread().getName());
                 //현제 Thread에 interrupt()를 호출하여 interrput()를 발생 시킵 니다. 즉 현제 Thread의 interrupted 값이 -> true로 변경 됩니다. -> 즉 while 문을 종료하게 됩니다.
                 Thread.currentThread().interrupt();
             }
@@ -60,7 +64,7 @@ public class CounterIncreaseHandler implements Runnable {
     }
 
     public Map<String, Long> getThreadHistory() {
-        return threadHistory.stream().collect(Collectors.groupingBy(s->s,Collectors.counting()));
+        return threadHistory.stream().collect(Collectors.groupingBy(s -> s, Collectors.counting()));
     }
 
 }
