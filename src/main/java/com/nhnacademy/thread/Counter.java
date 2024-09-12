@@ -28,7 +28,7 @@ public class Counter {
         //TODO#2 this.countMaxSize 초기화 합니다.
         this.countMaxSize = countMaxSize;
         //TODO#3 this.count 값을 0으로 초기화 합니다.
-        this.count = 0;
+        this.count = 0L;
     }
 
     public void run() {
