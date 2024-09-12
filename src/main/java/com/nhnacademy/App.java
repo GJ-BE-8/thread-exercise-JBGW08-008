@@ -16,17 +16,15 @@ import com.nhnacademy.thread.CounterHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class App
-{
-    public static void main( String[] args )
-    {
+public class App {
+    public static void main(String[] args) {
         //counterHandlerA 객체를 생성 합니다. countMaxSize : 10
         CounterHandler counterHandlerA = new CounterHandler(10l);
         //threadA 생성시 counterHandlerA 객체를 paramter로 전달 합니다.
         Thread threadA = new Thread(counterHandlerA);
         //threadA의 name을 'my-counter-A' 로 설정 합니다.
         threadA.setName("my-counter-A");
-        log.debug("threadA-state:{}",threadA.getState());
+        log.debug("threadA-state:{}", threadA.getState());
 
         //counterHandlerB 객체를 생성 합니다. countMaxSize : 10
         CounterHandler counterHandlerB = new CounterHandler(10l);
@@ -34,23 +32,30 @@ public class App
         Thread threadB = new Thread(counterHandlerB);
         //threadB의 name을 'my-counter-B' 로 설정 합니다.
         threadB.setName("my-counter-B");
-        log.debug("threadB-state:{}",threadB.getState());
+        log.debug("threadB-state:{}", threadB.getState());
 
         //threadA를 시작 합니다.
         threadA.start();
-        log.debug("threadA-state:{}",threadA.getState());
+        log.debug("threadA-state:{}", threadA.getState());
 
         //threadB를 시작 합니다.
         threadB.start();
-        log.debug("threadB-state:{}",threadB.getState());
+        log.debug("threadB-state:{}", threadB.getState());
 
         //TODO#1 - main Thread 에서 3초 후  threadA에 interrupt 예외를 발생 시킴 니다.
-
+        try {
+            Thread.sleep(3000);
+            threadA.interrupt();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         //TODO#3 Main Thread가 threadA, ThreadB가 종료될 때 까지 대기 합니다. Thread.yield를 사용 합니다.
-
+        while (threadA.isAlive() || threadB.isAlive()) {
+            Thread.yield();
+        }
         //threadA, threadB 상태를 출력 합니다.
-        log.debug("threadA-status:{}",threadA.getState());
-        log.debug("threadB-status:{}",threadB.getState());
+        log.debug("threadA-status:{}", threadA.getState());
+        log.debug("threadB-status:{}", threadB.getState());
 
         //main thread 종료, 'Application exit!' message를 출력 합니다.
         log.debug("Application exit!");
