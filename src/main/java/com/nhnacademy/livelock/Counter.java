@@ -12,10 +12,9 @@
 
 package com.nhnacademy.livelock;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Counter {
@@ -27,7 +26,7 @@ public class Counter {
             if (lock.tryLock()) {
                 try {
                     count++;
-                    log.debug("{} count++ : {}", Thread.currentThread().getName(), count );
+                    log.debug("{} count++ : {}", Thread.currentThread().getName(), count);
                     break;
                 } finally {
                     lock.unlock();
