@@ -14,17 +14,11 @@ package com.nhnacademy;
 
 import com.nhnacademy.livelock.Counter;
 
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
 /**
  * Hello world!
- *
  */
-public class App 
-{
-    public static void main( String[] args )
-    {
+public class App {
+    public static void main(String[] args) {
         Counter counter = new Counter();
 
         Runnable task = () -> {
@@ -33,13 +27,13 @@ public class App
             }
         };
 
+        // 라이브락은 잠금을 하는 타이밍과 잠금 해제의 타이밍의 차이로 나오는 문제라 생각해도 된다
         Thread threadA = new Thread(task, "counter-A");
         Thread threadB = new Thread(task, "counter-B");
 
         threadA.start();
         threadB.start();
     }
-
 
 
 }
