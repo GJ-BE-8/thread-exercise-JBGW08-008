@@ -37,20 +37,24 @@ public class CounterHandler implements Runnable {
     public void run() {
         //TODO#6 Thread에 의해서 run() method가 호출되면 무한 대기 합니다. monitor객체를 이용해서 구현하세요
         //monitor는 여러 Thread가 동시에 접근할 수 없도록  접근을 제어해야 합니다.
-        try {
-            monitor
-        }
-
-        do {
+        synchronized (monitor) {
             try {
-                Thread.sleep(1000);
+                monitor.wait();
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            count++;
-            log.debug("thread:{},state:{},count:{}", Thread.currentThread().getName(),
-                    Thread.currentThread().getState(), count);
 
-        } while (count < countMaxSize);
+            do {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                count++;
+                log.debug("thread:{},state:{},count:{}", Thread.currentThread().getName(),
+                        Thread.currentThread().getState(), count);
+
+            } while (count < countMaxSize);
+        }
     }
 }
