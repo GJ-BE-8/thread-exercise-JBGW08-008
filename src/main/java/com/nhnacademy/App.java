@@ -11,17 +11,16 @@
  */
 
 package com.nhnacademy;
+// 코드 확인
 
 import com.nhnacademy.count.SharedCounter;
 import com.nhnacademy.thread.CounterIncreaseHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class App 
-{
+public class App {
 
-    public static void main( String[] args )
-    {
+    public static void main(String[] args) {
 
         //shardCounter 객체를 0으로 초기화 합니다.
         SharedCounter sharedCounter = new SharedCounter(0l);
@@ -53,7 +52,7 @@ public class App
         }
 
         //main Thread는 threadA와 threadB의 상태가 terminated가 될 때 까지 대기 합니다. 즉 threadA, threadB가 종료될 때 까지 대기(양보) 합니다.
-        while (threadA.isAlive() && threadB.isAlive()){
+        while (threadA.isAlive() && threadB.isAlive()) {
             Thread.yield();
         }
 
