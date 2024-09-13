@@ -45,7 +45,11 @@ public class App {
         }
 
         synchronized (monitor) {
-            threadA.notify();
+            try {
+                monitor.notify();
+            } catch (RuntimeException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         //Main Thread가 threadA  종료될 때 까지 대기 합니다. Thread.yield를 사용 합니다.
